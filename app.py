@@ -3,6 +3,11 @@ import yt_dlp
 import tempfile
 import os
 
+import subprocess
+result = subprocess.run(['ffmpeg', '-version'], capture_output=True, text=True)
+print(result.stdout)
+
+
 # タイトルと説明
 st.title("YouTube Video Downloader")
 st.write("Enter the URL of a YouTube video, and download the video file.")
