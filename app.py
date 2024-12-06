@@ -64,11 +64,9 @@ def download_video(url: str, quality: str, progress_bar, status_text) -> Optiona
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 # Download video
                 info = ydl.extract_info(url, download=True)
-                video_title = info.get('title', 'video').replace('/', '_')
-                filename = f"{video_title}.mp4"
-                video_path = os.path.join(tmpdir, filename)
-                with open(video_path, "rb") as f:
-                    return f.read(), filename, info
+                file_path = ydl.prepare_filename(info)
+                with open(file_path, "rb") as f:
+                    return f.read(), os.path.basename(file_path), info
         return None, None, None
     except Exception as e:
         st.error(f"Download failed: {str(e)}")
@@ -106,11 +104,9 @@ def download_audio(url: str, progress_bar, status_text) -> Optional[tuple]:
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 # Download audio
                 info = ydl.extract_info(url, download=True)
-                audio_title = info.get('title', 'audio').replace('/', '_')
-                filename = f"{audio_title}.mp3"
-                audio_path = os.path.join(tmpdir, filename)
-                with open(audio_path, "rb") as f:
-                    return f.read(), filename, info
+                file_path = ydl.prepare_filename(info)
+                with open(file_path, "rb") as f:
+                    return f.read(), os.path.basename(file_path), info
         return None, None, None
     except Exception as e:
         st.error(f"Download failed: {str(e)}")
